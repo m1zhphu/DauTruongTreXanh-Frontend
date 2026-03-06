@@ -31,6 +31,8 @@ const LandingPage = () => {
   const { scrollY } = useScroll();
   const heroY = useTransform(scrollY, [0, 500], [0, 150]); 
 
+  const isLoggedIn = !!localStorage.getItem('client_token');
+
   return (
     <div className="min-h-screen font-sans text-slate-800 bg-[#F8FAFC] selection:bg-emerald-200 selection:text-emerald-900 overflow-x-hidden">
       
@@ -77,20 +79,20 @@ const LandingPage = () => {
                     
                     <motion.div variants={fadeInUp} className="flex flex-col sm:flex-row items-center justify-center lg:justify-start gap-4">
                       <button 
-                        onClick={() => navigate("/register")} 
+                        onClick={() => navigate(isLoggedIn ? "/topic" : "/register")} 
                         className="group relative w-full sm:w-auto px-8 py-4 bg-slate-900 text-white rounded-2xl font-bold text-lg shadow-xl shadow-slate-900/20 hover:-translate-y-1 transition-all overflow-hidden"
-                      >
+                        >
                         <div className="absolute inset-0 w-full h-full bg-gradient-to-r from-emerald-500 to-teal-500 opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
                         <span className="relative flex items-center justify-center gap-2">
-                          Tham gia ngay <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform"/>
+                            {isLoggedIn ? "Tiếp tục học" : "Tham gia ngay"} <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform"/>
                         </span>
-                      </button>
+                        </button>
                       
                       <button 
                         onClick={() => navigate("/tutorial")}
                         className="w-full sm:w-auto px-8 py-4 bg-white text-slate-700 border border-slate-200 hover:border-emerald-200 hover:bg-emerald-50/50 rounded-2xl font-bold text-lg transition-all flex items-center justify-center gap-2"
                       >
-                        <Play size={18} className="fill-current" /> Xem Demo
+                        <Play size={18} className="fill-current" /> Xem Hướng Dẫn
                       </button>
                     </motion.div>
       
@@ -398,8 +400,17 @@ const LandingPage = () => {
                             </div>
                             {/* Sound Wave Animation */}
                             <div className="flex gap-1 h-8 items-end">
-                                {[1,2,3,4].map(i => (
-                                    <div key={i} className="w-1.5 bg-amber-400 rounded-full animate-bounce-custom" style={{ height: `${30 + Math.random() * 70}%`, animationDuration: `${0.6 + Math.random() * 0.4}s` }}></div>
+                                {[
+                                    { height: '70%', duration: '0.8s' },
+                                    { height: '100%', duration: '0.6s' },
+                                    { height: '45%', duration: '0.9s' },
+                                    { height: '85%', duration: '0.7s' }
+                                ].map((bar, index) => (
+                                    <div 
+                                        key={index} 
+                                        className="w-1.5 bg-amber-400 rounded-full animate-bounce-custom" 
+                                        style={{ height: bar.height, animationDuration: bar.duration }}
+                                    ></div>
                                 ))}
                             </div>
                         </div>
@@ -687,11 +698,11 @@ const LandingPage = () => {
                   </p>
                   
                   <button 
-                    onClick={() => navigate("/register")}
+                    onClick={() => navigate(isLoggedIn ? "/topic" : "/register")}
                     className="inline-flex items-center gap-3 px-10 py-5 bg-white text-slate-900 rounded-full font-bold text-xl hover:bg-emerald-50 hover:text-emerald-700 hover:scale-105 hover:shadow-2xl transition-all duration-300"
-                  >
-                    Đăng ký miễn phí <ArrowRight size={24} />
-                  </button>
+                    >
+                    {isLoggedIn ? "Vào không gian học" : "Đăng ký miễn phí"} <ArrowRight size={24} />
+                    </button>
                   <p className="mt-6 text-sm text-slate-500">Không cần thẻ tín dụng. Hủy bất cứ lúc nào.</p>
               </motion.div>
             </div>
